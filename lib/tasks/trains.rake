@@ -32,15 +32,10 @@ task :trains => :environment do
         next
       end
 
-      response = HTTParty.post("https://api.clockworksms.com/http/send.aspx", {query: {
-         :key => "3cf1f7012e1ad38c8b0d36a32f18fc40673f7199", 
-         :to => '447715957404', 
-         :content => "Some train left Kings Cross some time ago..."}})
-      if response.code
-        puts response.body
-      else
-        puts"shit happens"
-      end
+      puts "queueing a text"
+
+      TextQueue.create(send_after: (Time.now + 60), dest: '447715957404',
+                       message: "Some train left Kings Cross recently...")
 
       client.acknowledge(msg, msg.headers)
     end
