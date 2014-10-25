@@ -3,11 +3,14 @@ require 'stomp'
 require 'json'
 
 task :trains => :environment do
+  # load the static info re names of train stops
+  corpus_db = JSON.parse(IO.read(File.join(Rails.root, "app/public/corpus.json")))['TIPLOCDATA']
+
   client_headers = { "accept-version" => "1.1", "heart-beat" => "5000,10000", 
                      "client-id" => Socket.gethostname,
                      "host" => "datafeeds.networkrail.co.uk" }
   client_hash = { :hosts => [ { :login => "giedrius.kudelis@gmail.com",
-                                :passcode => "q!N0jFtb=zhz", 
+                                :passcode => "^FDMe4BUk`t#", 
                                 :host => "datafeeds.networkrail.co.uk", 
                                 :port => 61618 } ], 
                   :connect_headers => client_headers,
@@ -27,15 +30,15 @@ task :trains => :environment do
     msg_array = JSON.parse msg.body
     msg_array.each do |msg_single|
       if msg_single["header"]["msg_type"] != "0003" or
-          msg_single["body"]["event_type"] != "DEPARTURE" or
-          msg_single["body"]["loc_stanox"] != "54311" then
+          msg_single["body"]["event_type"] != "DEPARTURE" then
         next
       end
 
       puts "queueing a text"
 
+      dest_name = corpus_db.select{|dest| dest['STANOX'] == msg_single['body']['loc_stanox']}[0]
       TextQueue.create(send_after: (Time.now + 60), dest: '447715957404',
-                       message: "Some train left Kings Cross recently...")
+                       message: "Some train left " + dest_name + " a minute ago...")
 
       client.acknowledge(msg, msg.headers)
     end
