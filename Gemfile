@@ -16,6 +16,8 @@ gem 'coffee-rails', '~> 4.0.0'
 
 
 gem 'clockworksms', '~> 1.2.0'
+
+gem 'httparty', '~> 0.13.1'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks

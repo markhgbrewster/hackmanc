@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   
    get 'trains' => 'trains#index'
    
+   get 'clockwork' => 'trains#clockwork'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
