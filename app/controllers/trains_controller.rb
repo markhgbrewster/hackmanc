@@ -5,7 +5,7 @@ class TrainsController < ApplicationController
   
   def clockwork
     system ('rake clockwork')
-    flash[:notice] = "sent asshole text"
+    flash[:notice] = "sent some asshole a text"
     redirect_to action: "index"
   end
 end
