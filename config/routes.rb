@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   resources :messages
   
    get 'trains' => 'trains#index'
+   get 'trains_another' => 'trains#another'
    
 
   # The priority is based upon order of creation: first created -> highest priority.
