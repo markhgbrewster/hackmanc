@@ -2,7 +2,9 @@ Rails.application.routes.draw do
   resources :users do
     post 'register', :on => :collection
   end
-
+  
+  root 'users#index'
+  
   resources :messages
   
    get 'trains' => 'trains#index'
