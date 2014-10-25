@@ -1,6 +1,7 @@
 # require 'clockwork'
 require 'stomp'
 require 'json'
+require 'open-uri'
 
 task :trains => :environment do
   # load the static info re names of train stops
