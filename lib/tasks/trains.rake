@@ -1,15 +1,17 @@
 # require 'clockwork'
 require 'stomp'
+require 'json'
 
 task :trains => :environment do
   client_headers = { "accept-version" => "1.1", "heart-beat" => "5000,10000", 
                      "client-id" => Socket.gethostname,
                      "host" => "datafeeds.networkrail.co.uk" }
   client_hash = { :hosts => [ { :login => "giedrius.kudelis@gmail.com",
-                                :passcode => "Kalambur4$", 
+                                :passcode => "q!N0jFtb=zhz", 
                                 :host => "datafeeds.networkrail.co.uk", 
                                 :port => 61618 } ], 
-                  :connect_headers => client_headers }
+                  :connect_headers => client_headers,
+                  :start_timeout => 0 }
 
   client = Stomp::Client.new(client_hash)
 
@@ -22,8 +24,26 @@ task :trains => :environment do
 
   # Subscribe to the RTPPM topic and process messages
   client.subscribe("/topic/TRAIN_MVT_ALL_TOC", { 'id' => client.uuid(), 'ack' => 'client', 'activemq.subscriptionName' => Socket.gethostname + '-TRAIN_MVT' }) do |msg|
-    puts msg.body
-    client.acknowledge(msg, msg.headers)
+    msg_array = JSON.parse msg.body
+    msg_array.each do |msg_single|
+      if msg_single["header"]["msg_type"] != "0003" or
+          msg_single["body"]["event_type"] != "DEPARTURE" or
+          msg_single["body"]["loc_stanox"] != "54311" then
+        next
+      end
+
+      response = HTTParty.post("https://api.clockworksms.com/http/send.aspx", {query: {
+         :key => "3cf1f7012e1ad38c8b0d36a32f18fc40673f7199", 
+         :to => '447715957404', 
+         :content => "Some train left Kings Cross some time ago..."}})
+      if response.code
+        puts response.body
+      else
+        puts"shit happens"
+      end
+
+      client.acknowledge(msg, msg.headers)
+    end
   end
 
   client.join
