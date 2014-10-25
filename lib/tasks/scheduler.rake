@@ -1,7 +1,6 @@
 desc "This task if for Heroku Scheduler add-on"
 task :process_texts => :environment do
   loop do
-    puts "processing text queue"
     TextQueue.where("send_after < ?", Time.now).each do |text|
       puts "sending text"
 
@@ -17,6 +16,5 @@ task :process_texts => :environment do
       end
 
     end
-    puts "done processing text queue"
   end
 end
