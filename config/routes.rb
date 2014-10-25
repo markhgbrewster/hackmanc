@@ -6,7 +6,9 @@ Rails.application.routes.draw do
   
   root 'users#index'
   
-  resources :messages
+  resources :messages do 
+    post 'random', :on => :collection
+  end
   
    get 'trains' => 'trains#index'
    get 'trains_another' => 'trains#another'

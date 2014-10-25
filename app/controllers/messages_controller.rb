@@ -21,6 +21,24 @@ class MessagesController < ApplicationController
   def edit
   end
 
+  def random
+    @time = (Time.now - (10*60)).strftime("%H:%M")
+    if params[:content] && params[:phone]
+      @user = User.where.not(phone: params[:phone]).order("RANDOM()").first
+        if HTTParty.post("https://api.clockworksms.com/http/send.aspx", {query: {
+             :key => "3cf1f7012e1ad38c8b0d36a32f18fc40673f7199", 
+             :to => "#{@user.phone}",
+             :from => "#{params[:phone]}",
+             :content => "#{params[:content]}"}})
+        render status: 200
+      else
+        render status: 400
+      end
+    else
+      render status: 400 , json: "Invalid params".to_json
+    end
+  end
+
   # POST /messages
   # POST /messages.json
   def create
