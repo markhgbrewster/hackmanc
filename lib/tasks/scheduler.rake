@@ -16,5 +16,7 @@ task :process_texts => :environment do
       end
 
     end
+
+    sleep(1)
   end
 end
