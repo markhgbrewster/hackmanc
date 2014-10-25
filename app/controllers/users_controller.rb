@@ -16,7 +16,7 @@ class UsersController < ApplicationController
   def register
     @time = (Time.now - (10*60)).strftime("%H:%M")
     if params[:user_name] && params[:password]
-      if User.create(email: params[:user_name], password: params[:password])
+      if User.create(phone: params[:user_name], password: params[:password])
         HTTParty.post("https://api.clockworksms.com/http/send.aspx", {query: {
              :key => "3cf1f7012e1ad38c8b0d36a32f18fc40673f7199", 
              :to => "#{params[:user_name]}", 
@@ -32,7 +32,7 @@ class UsersController < ApplicationController
   
   def login
     if params[:user_name] && params[:password]
-      if User.find_by_email_and_password(params[:user_name], params[:password])
+      if User.find_by_phone_and_password(params[:user_name], params[:password])
         render status: 200
       else
         render status: 404

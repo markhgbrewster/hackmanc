@@ -3,7 +3,8 @@
 task :clockwork => :environment do
  responce = HTTParty.post("https://api.clockworksms.com/http/send.aspx", {query: {
      :key => "3cf1f7012e1ad38c8b0d36a32f18fc40673f7199", 
-     :to => '447739141474', 
+     :to => '447739141474',
+     :from => '447739141474', 
      :content => "The Time is #{Time.now}"}})
   if responce.code
     puts responce.body
