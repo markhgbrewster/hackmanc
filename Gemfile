@@ -19,6 +19,8 @@ gem 'httparty', '~> 0.13.1'
 
 gem 'stomp'
 
+gem 'rack-cors', :require => 'rack/cors'
+
 #gem 'clockworksms', '~> 1.2.0'
 
 # Use jquery as the JavaScript library
