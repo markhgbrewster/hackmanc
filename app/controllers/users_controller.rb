@@ -29,6 +29,19 @@ class UsersController < ApplicationController
       render status: 400 , json: "Invalid params".to_json
     end
   end
+  
+  def login
+    if params[:user_name] && params[:password]
+      if User.find_by_email_and_password(params[:user_name], params[:password])
+        render status: 200
+      else
+        render status: 404
+      end
+    else
+      render status: 400 , json: "Invalid params".to_json
+    end
+  end
+    
 
   # GET /users/new
   def new
