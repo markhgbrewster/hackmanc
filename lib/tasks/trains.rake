@@ -4,7 +4,7 @@ require 'json'
 
 task :trains => :environment do
   # load the static info re names of train stops
-  corpus_db = JSON.parse(IO.read("/public/corpus.json"))['TIPLOCDATA']
+  corpus_db = JSON.parse(IO.read(File.join(RAILS_ROOT, "app/public/corpus.json")))['TIPLOCDATA']
 
   client_headers = { "accept-version" => "1.1", "heart-beat" => "5000,10000", 
                      "client-id" => Socket.gethostname,
