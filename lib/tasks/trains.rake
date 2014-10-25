@@ -34,7 +34,7 @@ task :trains => :environment do
 
       puts "queueing a text"
 
-      TextQueue.create(send_after: Time.now, dest: '447715957404',
+      TextQueue.create(send_after: (Time.now + 60), dest: '447715957404',
                        message: "Some train left Kings Cross recently...")
 
       client.acknowledge(msg, msg.headers)
