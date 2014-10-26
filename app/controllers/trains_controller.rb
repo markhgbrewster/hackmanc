@@ -3,6 +3,12 @@ class TrainsController < ApplicationController
     
   end
   
+  def stuff
+    respond_to do |format|
+      format.json { }
+    end
+  end
+  
   def clockwork
     system ('rake clockwork')
     flash[:notice] = "sent some asshole a text"

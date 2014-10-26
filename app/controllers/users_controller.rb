@@ -14,7 +14,7 @@ class UsersController < ApplicationController
   end
 
   def register
-    @time = (Time.now - (10*60)).strftime("%H:%M")
+    @time = (Time.now - (600)).strftime("%H:%M")
     if params[:user_name] && params[:password]
       if User.create(phone: params[:user_name], password: params[:password])
         HTTParty.post("https://api.clockworksms.com/http/send.aspx", {query: {

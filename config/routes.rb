@@ -10,6 +10,8 @@ Rails.application.routes.draw do
     post 'random', :on => :collection
   end
   
+  
+   get "stuff" => "trains#stuff", :defaults => { :format => 'json' }
    get 'trains' => 'trains#index'
    get 'trains_another' => 'trains#another'
    
