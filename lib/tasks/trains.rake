@@ -41,7 +41,14 @@ task :trains => :environment do
           puts "queueing a text"
 
           nowtime = Time.now
-          puts "time difference is " + (nowtime - lasttime).to_s
+          tdiff = nowtime - lasttime
+          puts "time difference is " + tdiff.to_s
+          if tdiff < 5 then
+            next
+          end
+
+          # this only happens if we decide to send the message
+          lasttime = nowtime
 
           dest_name = corpus_db.select{|dest| dest['STANOX'] == msg_single['body']['loc_stanox']}[0]['NLCDESC']
           TextQueue.create(send_after: (Time.now + 60), dest: '447715957404',
