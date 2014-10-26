@@ -45,7 +45,7 @@ task :trains => :environment do
           end
 
           # this only happens if we decide to send the message
-          puts "queueing a text, tdiff = " + tdiff
+          puts "queueing a text, tdiff = " + tdiff.to_s
           lasttime = nowtime
 
           # select user to send to
