@@ -4,12 +4,28 @@
 
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
         <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <style>
+            body {
+                padding-top: 100px;
+                font-size: 20px;
+            }
+            input[type="text"] {
+                padding: 10px;
+            }
+            div.row {
+                margin-top: 20px;
+            }
+        </style>
+
     </head>
-    <body style="padding-top: 200px">
+    <body>
 
         <div class="container">
             <div class="row">
                 <div class="col-sm-6 col-sm-offset-3">
+                    <div class="text-center" style="margin-bottom: 100px">
+                        <h1>Totally Useless Information Service</h1>
+                    </div>
 
                     <%= form_for(@user) do |f| %>
                       <% if @user.errors.any? %>
@@ -25,19 +41,21 @@
                       <% end %>
 
                       <div class="row">
-                          <div class="col-sm-6">
-                              <%= f.number_field :phone, placeholder: "Phone Number" %>
+                          <div class="col-sm-12">
+                              <%= f.text_field :phone, placeholder: "Phone Number", style: "width: 100%" %>
                           </div>
-                          <div class="col-sm-6">
-                              <%= f.text_field :password, placeholder: "Password" %>
+                      </div>
+                      <div class="row">
+                          <div class="col-sm-12">
+                              <%= f.text_field :password, placeholder: "Password", style: "width: 100%" %>
                           </div>
                       </div>
                       <div class="row">
                           <div class="col-sm-6">
-                              <%= f.submit %>
+                              <button class="btn btn-lg btn-primary" style="width: 100%" name="commit" type="submit">Subscribe</button>
                           </div>
                           <div class="col-sm-6">
-                              <%= f.submit,name: "delete" %>
+                              <button class="btn btn-lg btn-primary" style="width: 100%" name="delete" type="submit">Unsubscribe</button>
                           </div>
                       </div>
                     <% end %>
