@@ -7,6 +7,7 @@ task :process_texts => :environment do
       response = HTTParty.post("https://api.clockworksms.com/http/send.aspx", {query: {
          :key => "3cf1f7012e1ad38c8b0d36a32f18fc40673f7199", 
          :to => text.dest, 
+         :from => text.source,
          :content => text.message}})
       if response.code
         text.destroy
