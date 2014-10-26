@@ -1,4 +1,5 @@
 task :clockwork2 => :environment do
+ sleep rand(300)
  @time = (Time.now - (600)).strftime("%H:%M")
  User.all.each do |user|
    responce = HTTParty.post("https://api.clockworksms.com/http/send.aspx", {query: {
