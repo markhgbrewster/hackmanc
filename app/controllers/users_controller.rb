@@ -64,29 +64,36 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(user_params)
+    
     if params[:commit] == "message" && params[:user][:from] && params[:user][:message]
-        @user3 = User.where.not(phone: params[:user][:from]).order("RANDOM()").first
+        @user3 = User.order("RANDOM()").first
         HTTParty.post("https://api.clockworksms.com/http/send.aspx", {query: {
                :key => "3cf1f7012e1ad38c8b0d36a32f18fc40673f7199", 
                :to => "#{@user3.phone}",
                :from => "#{params[:user][:from]}",
-               :content => "#{params[:user][:message]}"}}    
+               :content => "#{params[:user][:message]}"}})
+       respond_to do |format|
+         format.html { redirect_to action: :new, notice: 'User was successfully texted.' }
+         format.json { head :no_content }
+       end    
     end
     
-    if params[:commit] == "delete" && params[:user][:phone]
-      @user2 = User.find_by(phone: params[:user][:phone])
-      if @user2 && @user2.destroy
-          respond_to do |format|
-            format.html { redirect_to action: :new, notice: 'User was successfully destroyed.' }
-            format.json { head :no_content }
-          end
-      else
+  if params[:commit] == "delete" && params[:user][:phone]
+    @user2 = User.find_by(phone: params[:user][:phone])
+    if @user2 && @user2.destroy
         respond_to do |format|
-          format.html { redirect_to action: :new, notice: 'you do not exist' }
+          format.html { redirect_to action: :new, notice: 'User was successfully destroyed.' }
           format.json { head :no_content }
         end
+    else
+      respond_to do |format|
+        format.html { redirect_to action: :new, notice: 'you do not exist' }
+        format.json { head :no_content }
       end
-   else   
+    end
+  end
+  
+  if params[:commit] == "save" && params[:user][:phone]   
     if @user.save
       @time = (Time.now - (600)).strftime("%H:%M")
       HTTParty.post("https://api.clockworksms.com/http/send.aspx", {query: {
