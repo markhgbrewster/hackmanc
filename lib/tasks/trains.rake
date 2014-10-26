@@ -42,7 +42,6 @@ task :trains => :environment do
 
           nowtime = Time.now
           tdiff = nowtime - lasttime
-          puts "time difference is " + tdiff.to_s
           if tdiff < 5 then
             next
           end
