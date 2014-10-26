@@ -49,8 +49,10 @@ task :trains => :environment do
           # this only happens if we decide to send the message
           lasttime = nowtime
 
+          # select user to send to
+          phone_number = User.first(:offset => rand(User.count)).phone
           dest_name = corpus_db.select{|dest| dest['STANOX'] == msg_single['body']['loc_stanox']}[0]['NLCDESC']
-          TextQueue.create(send_after: (Time.now + 60), dest: '447715957404',
+          TextQueue.create(send_after: (Time.now + 60), dest: phone_number,
                            message: "Some train left " + dest_name + " a minute ago...")
 
           client.acknowledge(msg, msg.headers)
