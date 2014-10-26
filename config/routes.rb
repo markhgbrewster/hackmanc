@@ -4,7 +4,7 @@ Rails.application.routes.draw do
     post 'login', :on => :collection
   end
   
-  root 'users#index'
+  root 'users#new'
   
   resources :messages do 
     post 'random', :on => :collection

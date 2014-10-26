@@ -7,7 +7,15 @@ class UsersController < ApplicationController
     @users = User.all
 
   end
-
+  
+  def setup
+    @user = User.new
+  end
+  
+  def unsubcribe
+  
+  end
+  
   # GET /users/1
   # GET /users/1.json
   def show
@@ -56,16 +64,36 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(user_params)
-
+    if params[:commit] == "delete" && params[:phone]
+      @user2 = User.find_by(phone: params[:phone])
+      if @user2 && @user2.destroy
+          respond_to do |format|
+            format.html { redirect_to action: :new, notice: 'User was successfully destroyed.' }
+            format.json { head :no_content }
+          end
+      else
+        respond_to do |format|
+          format.html { redirect_to action: :new, notice: 'you do not exist' }
+          format.json { head :no_content }
+        end
+      end
+   else
     respond_to do |format|
       if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
-        format.json { render :show, status: :created, location: @user }
+        @time = (Time.now - (600)).strftime("%H:%M")
+        HTTParty.post("https://api.clockworksms.com/http/send.aspx", {query: {
+             :key => "3cf1f7012e1ad38c8b0d36a32f18fc40673f7199", 
+             :to => "#{@user.name}", 
+             :from => "Rasputin",
+             :content => "The Time ten minutes ago was #{@time}"}})
+        format.html { redirect_to action: :new, notice: 'User was successfully created.' }
+        format.json { render :new, status: :created, location: @user }
       else
         format.html { render :new }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
+   end
   end
 
   # PATCH/PUT /users/1
