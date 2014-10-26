@@ -78,8 +78,8 @@ class UsersController < ApplicationController
        end    
     end
     
-  if params[:commit] == "delete" && params[:user][:phone]
-    @user2 = User.find_by(phone: params[:user][:phone])
+  if params[:commit] == "delete" && params[:user][:phone] && params[:user][:password]
+    @user2 = User.find_by_phone_and_password(params[:user][:phone], params[:user][:password])
     if @user2 && @user2.destroy
         respond_to do |format|
           format.html { redirect_to action: :new, notice: 'User was successfully destroyed.' }
