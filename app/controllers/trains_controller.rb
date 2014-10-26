@@ -4,8 +4,11 @@ class TrainsController < ApplicationController
   end
   
   def stuff
+    @stuff =  TextQueue.all
+    
+
     respond_to do |format|
-      format.json { }
+      format.json { render :json => @stuff.to_json }
     end
   end
   
