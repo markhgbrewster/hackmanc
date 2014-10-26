@@ -40,7 +40,7 @@ task :trains => :environment do
 
           nowtime = Time.now
           tdiff = nowtime - lasttime
-          if tdiff < 5 then
+          if tdiff < 30 then
             next
           end
 
