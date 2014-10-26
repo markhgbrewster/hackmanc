@@ -64,7 +64,7 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(user_params)
-    if params[:delete].present? && params[:phone]
+    if params[:commit] == "delete" && params[:phone]
       @user2 = User.find_by(phone: params[:phone])
       if @user2 && @user2.destroy
           respond_to do |format|
