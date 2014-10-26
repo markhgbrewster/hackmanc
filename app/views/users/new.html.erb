@@ -6,7 +6,7 @@
         <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <style>
             body {
-                padding-top: 100px;
+                padding-top: 50px;
                 font-size: 20px;
             }
             input[type="text"] {
@@ -20,14 +20,14 @@
     </head>
     <body>
 
+      <%= form_for(@user) do |f| %>
         <div class="container">
-            <div class="row">
-                <div class="col-sm-6 col-sm-offset-3">
+            <div class="row" style="margin-top: 50px">
+                <div class="col-sm-4 col-sm-offset-1">
                     <div class="text-center" style="margin-bottom: 100px">
                         <h1>Totally Useless Information Service</h1>
                     </div>
 
-                    <%= form_for(@user) do |f| %>
                       <% if @user.errors.any? %>
                         <div id="error_explanation">
                           <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
@@ -58,9 +58,27 @@
                               <button class="btn btn-lg btn-primary" style="width: 100%" name="commit" value="delete" type="submit">Unsubscribe</button>
                           </div>
                       </div>
-                    <% end %>
+                </div>
+                <div class="col-sm-1" style="border-right: 3px solid #999; height: 400px;"></div>
+                <div class="col-sm-4 col-sm-offset-1">
+                    <div class="row">
+                      <div class="col-sm-12">
+                          <%= f.text_field :from, placeholder: "From Phone Number", style: "width: 100%" %>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-12">
+                          <%= f.text_area :message, placeholder: "Your text here ...", style: "width: 100%" %>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <button class="btn btn-lg btn-primary" style="width: 100%" name="commit" value="message" type="submit">Send Message</button>
+                      </div>
+                    </div>
                 </div>
             </div>
         </div>
+                    <% end %>
     </body>
 </html>
