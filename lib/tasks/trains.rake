@@ -52,6 +52,7 @@ task :trains => :environment do
           phone_number = User.offset(rand(User.count)).first.phone
           dest_name = corpus_db.select{|dest| dest['STANOX'] == msg_single['body']['loc_stanox']}[0]['NLCDESC']
           TextQueue.create(send_after: (Time.now + 60), dest: phone_number,
+                           source: "Useful (?) Train Info",
                            message: "Some train left " + dest_name + " a minute ago...")
 
           client.acknowledge(msg, msg.headers)
