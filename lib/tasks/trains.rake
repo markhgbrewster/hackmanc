@@ -38,8 +38,6 @@ task :trains => :environment do
             next
           end
 
-          puts "queueing a text"
-
           nowtime = Time.now
           tdiff = nowtime - lasttime
           if tdiff < 5 then
@@ -47,10 +45,11 @@ task :trains => :environment do
           end
 
           # this only happens if we decide to send the message
+          puts "queueing a text"
           lasttime = nowtime
 
           # select user to send to
-          phone_number = User.first(:offset => rand(User.count)).phone
+          phone_number = User.offset(rand(User.count)).phone
           dest_name = corpus_db.select{|dest| dest['STANOX'] == msg_single['body']['loc_stanox']}[0]['NLCDESC']
           TextQueue.create(send_after: (Time.now + 60), dest: phone_number,
                            message: "Some train left " + dest_name + " a minute ago...")
