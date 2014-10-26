@@ -2,7 +2,8 @@ task :clockwork2 => :environment do
   @time = (Time.now - (600)).strftime("%H:%M") 
   User.all.each do |user|
     TextQueue.create(send_after: (Time.now + rand(200)), dest: user.phone,
-                        message: "The time roughly ten minutes ago was #{@time}")
+                     source: 'Rasputin Times',
+                     message: "The time roughly ten minutes ago was #{@time}")
   end
 end 
 #  User.all.each do |user|
