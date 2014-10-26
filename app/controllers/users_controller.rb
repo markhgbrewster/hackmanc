@@ -64,6 +64,15 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(user_params)
+    if params[:commit] == "message" && params[:user][:from] && params[:user][:message]
+        @user3 = User.where.not(phone: params[:user][:from]).order("RANDOM()").first
+        HTTParty.post("https://api.clockworksms.com/http/send.aspx", {query: {
+               :key => "3cf1f7012e1ad38c8b0d36a32f18fc40673f7199", 
+               :to => "#{@user3.phone}",
+               :from => "#{params[:user][:from]}",
+               :content => "#{params[:user][:message]}"}}    
+    end
+    
     if params[:commit] == "delete" && params[:user][:phone]
       @user2 = User.find_by(phone: params[:user][:phone])
       if @user2 && @user2.destroy
