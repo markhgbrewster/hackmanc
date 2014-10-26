@@ -53,7 +53,11 @@ task :trains => :environment do
       puts "Client close complete"
     rescue Stomp::Error::ProtocolException
       puts "protocol crashed"
-      client.close
+      begin
+        client.close
+      rescue Stomp::Error::ProtocolException
+        puts "closing crashed"
+      end
     end
   end
 
