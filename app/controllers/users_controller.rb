@@ -77,18 +77,20 @@ class UsersController < ApplicationController
           format.json { head :no_content }
         end
       end
-   else
-    respond_to do |format|
-      if @user.save
-        @time = (Time.now - (600)).strftime("%H:%M")
-        HTTParty.post("https://api.clockworksms.com/http/send.aspx", {query: {
-             :key => "3cf1f7012e1ad38c8b0d36a32f18fc40673f7199", 
-             :to => "#{@user.name}", 
-             :from => "Rasputin",
-             :content => "The Time ten minutes ago was #{@time}"}})
+   else   
+    if @user.save
+      @time = (Time.now - (600)).strftime("%H:%M")
+      HTTParty.post("https://api.clockworksms.com/http/send.aspx", {query: {
+           :key => "3cf1f7012e1ad38c8b0d36a32f18fc40673f7199", 
+           :to => "#{@user.phone}", 
+           :from => "Rasputin",
+           :content => "The Time ten minutes ago was #{@time}"}})
+      respond_to do |format|
         format.html { redirect_to action: :new, notice: 'User was successfully created.' }
         format.json { render :new, status: :created, location: @user }
-      else
+      end
+    else
+      respond_to do |format|
         format.html { render :new }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
