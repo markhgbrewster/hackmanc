@@ -5,7 +5,7 @@ require 'open-uri'
 
 task :trains => :environment do
   # load the static info re names of train stops
-  corpus_db = JSON.parse(open("https://glacial-reef-2223.herokuapp.com/corpus.json") { |io| io.read })
+  corpus_db = JSON.parse(open("https://glacial-reef-2223.herokuapp.com/corpus.json") { |io| io.read })['TIPLOCDATA']
 
   client_headers = { "accept-version" => "1.1", "heart-beat" => "5000,10000", 
                      "client-id" => Socket.gethostname,
@@ -37,7 +37,7 @@ task :trains => :environment do
 
       puts "queueing a text"
 
-      dest_name = corpus_db.select{|dest| dest['STANOX'] == msg_single['body']['loc_stanox']}[0]
+      dest_name = corpus_db.select{|dest| dest['STANOX'] == msg_single['body']['loc_stanox']}[0]['NLCDESC']
       TextQueue.create(send_after: (Time.now + 60), dest: '447715957404',
                        message: "Some train left " + dest_name + " a minute ago...")
 
